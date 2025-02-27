@@ -6,7 +6,8 @@ import AvenirBold from "../assets/fonts/AvenirLTStd-Heavy.otf"
 
 const StyledGlobalStyle = createGlobalStyle`
     :root {
-        font-size: 14px;
+        font-size: 16px;
+        color: #2c3e50;
     }
     body {
         margin: 0;

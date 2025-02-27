@@ -1,10 +1,12 @@
-import { Page } from "../../utils/Atoms"
+import LoginForm from "../../components/loginForm/LoginForm"
+import { PageElt } from "./SignInPageStyle"
 
 function SignInPage () {
+    
     return (
-        <Page>
-
-        </Page>
+        <PageElt>
+            <LoginForm />
+        </PageElt>
     )
 }
 

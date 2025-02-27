@@ -17,8 +17,8 @@ createRoot(document.getElementById('root')).render(
                     <GlobalStyle />
                     <Routes>
                         <Route path="/" element={ <IndexPage /> } />
-                        <Route path="/signin" element={ <SignInPage /> } />
-                        <Route path='/user' element={ <UserPage /> } />
+                        <Route path="/login" element={ <SignInPage /> } />
+                        <Route path="/user" element={ <UserPage /> } />
                     </Routes>
                 </App>
             </Provider>
