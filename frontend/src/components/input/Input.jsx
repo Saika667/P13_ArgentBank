@@ -1,6 +1,6 @@
 import { ErrorMessage, InputContainer, InputElt, Label } from "./InputStyle"
 
-function Input ({ label, type, id, placeholder }) {
+function Input ({ label, type, id, placeholder, change, inputValue, errorMessage }) {
     return (
         <InputContainer>
             <Label htmlFor={ id }>{ label }</Label>
@@ -8,8 +8,10 @@ function Input ({ label, type, id, placeholder }) {
                 type={ type }
                 id={ id }
                 placeholder={ placeholder }
+                onChange={ (e) => change(e.target.value) }
+                value={ inputValue }
             />
-            <ErrorMessage></ErrorMessage>
+            <ErrorMessage>{ errorMessage }</ErrorMessage>
         </InputContainer>
     )
 }

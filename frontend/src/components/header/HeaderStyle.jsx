@@ -33,13 +33,15 @@ export const Nav = styled.nav`
 `
 
 export const ItemWrapper = styled.div`
-    margin-right: 1rem;
+    user-select: none;
+    cursor: pointer;
 `
 
 export const StyledLink = styled(Link)`
     font-family: "Avenir-bold", Helvetica, Arial, sans-serif;
     text-decoration: none;
     color: #2c3e50;
+    margin-right: 1rem;
 `
 
 export const Span = styled.span`

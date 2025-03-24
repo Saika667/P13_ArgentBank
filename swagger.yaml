@@ -1,9 +1,9 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: Bank Argent API documentation
   description: Contains all available API endpoints in this codebase
-  version: '1.0.0'
-  termsOfService: 'http://swagger.io/terms/'
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
 host: localhost:3001
 basePath: /api/v1
 schemes:
@@ -21,17 +21,17 @@ paths:
           description: Login Payload
           required: true
           schema:
-            $ref: '#/definitions/Login'
+            $ref: "#/definitions/Login"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Login Successfully
           schema:
-            $ref: '#/definitions/LoginResponse'
-        '400':
+            $ref: "#/definitions/LoginResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
   /user/signup:
     post:
@@ -45,20 +45,20 @@ paths:
           description: Signup Payload
           required: true
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Signup Successfully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
   /user/profile:
-    post:
+    get:
       security:
         - Bearer: []
       tags:
@@ -67,19 +67,20 @@ paths:
       description: API for fetching a user profile
       parameters:
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: User profile retrieved successully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
     put:
       security:
@@ -90,6 +91,7 @@ paths:
       description: API for updating a user profile
       parameters:
         - in: header
+          type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
@@ -98,18 +100,106 @@ paths:
           description: Update user profile attributes
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: "#/definitions/UserProfile"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: User profile retrieved successully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
+  /transactions:
+    get:
+      security:
+        - Bearer: []
+      summary: Récupérer toutes les transactions du mois en cours, groupées par compte
+      description: Retourne la liste des transactions du mois en cours, organisées par compte
+      tags:
+        - Transactions
+      parameters:
+        - name: month
+          type: string
+          in: query
+          required: false
+          description: Mois et année au format YYYY-MM (par défaut, le mois en cours)
+      responses:
+        "200":
+          description: Succès - Liste des transactions groupées par compte
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Account"
+        "400":
+          description: requête invalide
+  /transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      summary: Récupérer les détails d'une transaction
+      description: Retourne les détails complets d'une transaction spécifique
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          type: string
+          in: path
+          required: true
+          description: ID unique de la transaction
+      responses:
+        "200":
+          description: Succès -  Détails de la transaction
+          schema:
+            $ref: "#/definitions/TransactionDetails"
+        "404":
+          description: Transaction non trouvée
+    put:
+      security:
+        - Bearer: []
+      summary: Modifier une transaction existante
+      description: Met à jour les informations d'une transaction spécifique
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          type: string
+          in: path
+          required: true
+          description: ID unique de la transaction
+        - in: body
+          name: body
+          description: Informations mises à jour de la transaction
+          required: true
+          schema:
+            $ref: "#/definitions/ModifyTransaction"
+      responses:
+        "200":
+          description: Transaction mise à jour avec succès
+        "400":
+          description: Requête invalide
+        "404":
+          description: Transaction non trouvée
+    delete:
+      security:
+        - Bearer: []
+      summary: Supprimer une transaction
+      description: Supprime une transaction spécifique de la base de données
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          type: string
+          in: path
+          required: true
+          description: Id unique de la transaction
+      responses:
+        "204":
+          description: Transaction supprimée avec succès
+        "404":
+          description: Transaction non trouvée
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -164,3 +254,53 @@ definitions:
         type: string
       lastName:
         type: string
+  ModifyTransaction:
+    type: object
+    required:
+      - category
+      - note
+    properties:
+      category:
+        type: string
+        description: Catégorie de la transaction
+      note:
+        type: string
+        description: Description de la transaction
+  TransactionDetails:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID unique de la transaction
+      date:
+        type: string
+        description: Date de la transaction
+      description:
+        type: string
+        description: Description de la transaction
+      amount:
+        type: number
+        description: Montant de la transaction
+      category:
+        type: string
+        description: Catégorie de la transaction
+      note:
+        type: string
+        description: Note de la transaction
+      balance:
+        type: number
+        description: Nouveau solde de compte après transaction
+  Account:
+    type: object
+    properties:
+      accountId:
+        type: number
+      accountName:
+        type: string
+      accountBalance:
+        type: number
+      transactions:
+        type: array
+        items:
+          $ref: "#/definitions/TransactionDetails"
+        description: Tableau des transactions du compte bancaire

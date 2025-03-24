@@ -7,10 +7,16 @@ export const Form = styled.form`
     column-gap: 1.5rem;
     width: 35rem;
     margin: 0 0 2rem 0;
+    width: 100%;
+    padding: 0 1rem;
+
+    @media only screen and (min-width : 920px) {
+        width: unset;
+    }
 `
 
 export const Wrapper = styled.div`
-    width: 47%;
+    width: 46%;
     display: flex;
 
     &:nth-child(odd) {

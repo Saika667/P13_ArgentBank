@@ -3,7 +3,6 @@ import styled from "styled-components"
 export const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
     width: 100%;
 `
 
@@ -19,5 +18,7 @@ export const Label = styled.label`
 `
 
 export const ErrorMessage = styled.span`
-
+    font-size: .8rem;
+    color: red;
+    margin: .5rem 0 1rem 0;
 `

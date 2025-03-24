@@ -7,4 +7,6 @@ export const Button = styled.button`
     border-color: #00bc77;
     background-color: #00bc77;
     color: #fff;
+    user-select: none;
+    cursor: pointer;
 `
