@@ -4,14 +4,14 @@ import { Checkbox, Form, Label, StyledSvg, Title, Wrapper } from "./LoginFormSty
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons"
 import ActionButton from "../actionButton/ActionButton"
 import { useDispatch, useSelector } from 'react-redux'
-import { clearForm, setInputValue, setUserData } from "../../features/user.slice"
+import { clearForm, setErrorValue, setInputValue } from "../../features/user.slice"
 import { loginApi } from "../../services/api"
 
 function LoginForm () {
     const loginForm = useSelector(({ user }) => user.login)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    console.log(loginForm)
     const getInputValue = (inputId) => {
         return loginForm.find(loginInput => loginInput.id === inputId).value
     }
@@ -20,11 +20,34 @@ function LoginForm () {
         dispatch(setInputValue({ form: "login", id: inputId, value }))
     }
 
+    const getErrorValue = (inputId) => {
+        console.log(loginForm.find(loginInput => loginInput.id === inputId).error)
+        return loginForm.find(loginInput => loginInput.id === inputId).error
+    }
+
     const login = async () => {
+        console.log('ee')
         const username = getInputValue('login-username')
         const password = getInputValue('login-password')
+        let hasError = true
 
-        if(username === "" || password === "") {
+        if (username === "") {
+            dispatch(setErrorValue({ form: "login", id: "login-username", message: "Ce champ ne peut être vide." }))
+            hasError = true
+        } else {
+            dispatch(setErrorValue({ form: "login", id: "login-username", message: "" }))
+            hasError = false
+        }
+
+        if (password === "") {
+            dispatch(setErrorValue({ form: "login", id: "login-password", message: "Ce champ ne peut être vide." }))
+            hasError = true
+        } else {
+            dispatch(setErrorValue({ form: "login", id: "login-password", message: "" }))
+            hasError = false
+        }
+
+        if (hasError) {
             return
         }
 
@@ -55,6 +78,7 @@ function LoginForm () {
                 id="login-username"
                 inputValue={ getInputValue('login-username') }
                 change={ (value) => handleInputChange('login-username', value) }
+                errorMessage={ getErrorValue('login-username') }
             />
 
             <Input
@@ -63,6 +87,7 @@ function LoginForm () {
                 id="login-password"
                 inputValue={ getInputValue('login-password') }
                 change={ (value) => handleInputChange('login-password', value) }
+                errorMessage={ getErrorValue('login-password')}
             />
 
             <Wrapper>

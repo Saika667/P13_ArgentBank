@@ -178,6 +178,8 @@ paths:
       responses:
         "200":
           description: Transaction mise à jour avec succès
+          schema:
+            $ref: "#/definitions/ModifyTransaction"
         "400":
           description: Requête invalide
         "404":

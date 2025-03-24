@@ -9,6 +9,7 @@ export const Button = styled.button`
     color: #fff;
     border: none;
     text-decoration: underline;
+    cursor: pointer;
 
     &.form {
         width: 8rem;

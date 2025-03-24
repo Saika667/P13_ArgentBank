@@ -3,15 +3,18 @@ import logo from "../../assets/argentBankLogo.png"
 import { faUserCircle, faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch, useSelector } from "react-redux"
 import { resetUser } from "../../features/user.slice"
-// import { faUserCircle } from "@fortawesome/free-regular-svg-icons"
+import { useNavigate } from "react-router-dom"
+
 function Header () {
     const user = useSelector(({ user }) => user.user)
     const isConnected = Object.keys(user).length !== 0 && localStorage.getItem('token')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const logout = () => {
         localStorage.removeItem('token')
         dispatch(resetUser())
+        navigate('/')
     }
 
     return (

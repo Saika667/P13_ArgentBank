@@ -3,7 +3,7 @@ import ActionButton from "../actionButton/ActionButton"
 import Input from "../input/Input"
 import { Form, Wrapper } from "./EditProfilFormStyle"
 import { setModalVisibility } from "../../features/modal.slice"
-import { setEditForm, setErrorValue, setInputValue } from "../../features/user.slice"
+import { clearForm, setEditForm, setErrorValue, setInputValue, setUserData } from "../../features/user.slice"
 import { useEffect } from "react"
 import { updateUser } from "../../services/api"
 
@@ -29,18 +29,18 @@ function EditProfilForm () {
         let hasError = true
 
         if (firstName === "") {
-            dispatch(setErrorValue({ form: "edit", id: "edit-firstname", value: "Ce champ ne peut être vide." }))
+            dispatch(setErrorValue({ form: "edit", id: "edit-firstname", message: "Ce champ ne peut être vide." }))
             hasError = true
         } else {
-            dispatch(setErrorValue({ form: "edit", id: "edit-firstname", value: "" }))
+            dispatch(setErrorValue({ form: "edit", id: "edit-firstname", message: "" }))
             hasError = false
         }
 
         if (lastName === "") {
-            dispatch(setErrorValue({ form: "edit", id: "edit-lastname", value: "Ce champ ne peut être vide." }))
+            dispatch(setErrorValue({ form: "edit", id: "edit-lastname", message: "Ce champ ne peut être vide." }))
             hasError = true
         } else {
-            dispatch(setErrorValue({ form: "edit", id: "edit-lastname", value: "" }))
+            dispatch(setErrorValue({ form: "edit", id: "edit-lastname", message: "" }))
             hasError = false
         }
 
@@ -54,6 +54,13 @@ function EditProfilForm () {
         }
         
         await updateUser(userData)
+        closeForm()
+        dispatch(setUserData(userData))
+    }
+    
+    const closeForm = () => {
+        dispatch(setModalVisibility({ modal: 'editProfil', visible: false }))
+        dispatch(clearForm('edit'))
     }
 
     useEffect(() => {
@@ -93,7 +100,7 @@ function EditProfilForm () {
                 <ActionButton 
                     label="Cancel" 
                     classname="form"
-                    onclick={() => dispatch(setModalVisibility({ modal: 'editProfil', visible: false }))}
+                    onclick={ () => closeForm() }
                 />
             </Wrapper>
         </Form>
